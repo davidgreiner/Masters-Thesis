@@ -15,6 +15,11 @@
 %% Available modes: draft, final (see README)
 \documentclass[twoside, english]{sdqthesis}
 
+\usepackage[nonumberlist]{glossaries}
+
+\makeglossaries
+\input{sections/glossary.tex}
+
 %% ---------------------------------
 %% | Information about the thesis  |
 %% ---------------------------------
@@ -23,7 +28,7 @@
 \author{David Greiner}
 
 %% Title (and possibly subtitle) of the thesis
-\title{Wearable sensors for automatic detection of trauma procedures.}
+\title{Wearable sensors for automatic detection of trauma procedures}
 
 %% Type of the thesis 
 \thesistype{Master's Thesis}
@@ -33,21 +38,21 @@
 
 %% You can put a logo in the ``logos'' directory and include it here
 %% instead of the SDQ logo
-% \grouplogo{myfile}
+\grouplogo{OSU_horizontal_2C_O_over_B}
 %% Alternatively, you can disable the group logo
-\nogrouplogo
+% \nogrouplogo
 
 %% The reviewers are the professors that grade your thesis
 \reviewerone{Prof. Dr. U. Hanebeck}
-\reviewertwo{Prof. B}
+\reviewertwo{Prof. }
 
 %% The advisors are PhDs or Postdocs
-\advisorone{M.Sc. C}
+\advisorone{Prof. Dr. Julie A. Adams}
 %% The second advisor can be omitted
-\advisortwo{M.Sc. D}
+\advisortwo{M.Sc. Jamison Heard}
 
 %% Please enter the start end end time of your thesis
-\editingtime{xx. January 2018}{xx. June 2018}
+\editingtime{January 14th, 2018}{July 14th, 2018}
 
 \settitle
 
@@ -114,6 +119,7 @@
 
 \listoffigures
 \listoftables
+\printglossary[style=long]
 
 %% -----------------
 %% |   Main part   |
@@ -123,7 +129,9 @@
 
 \input{sections/problem_statement.tex}
 \input{sections/literature_review.tex}
-\input{sections/evaluation.tex}
+\input{sections/systems.tex}
+\input{sections/experimental_design.tex}
+\input{sections/results.tex}
 \input{sections/conclusion.tex}
 
 %% --------------------
