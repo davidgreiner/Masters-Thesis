@@ -16,6 +16,12 @@
 \documentclass[twoside, english]{sdqthesis}
 
 \usepackage[nonumberlist]{glossaries}
+\usepackage{tabularx}
+\usepackage{makecell}
+
+\renewcommand\theadfont{\bfseries}
+\renewcommand\theadgape{\Gape[3pt]}
+\renewcommand\cellgape{\Gape[3pt]}
 
 \makeglossaries
 \input{sections/glossary.tex}
@@ -129,6 +135,7 @@
 
 \input{sections/problem_statement.tex}
 \input{sections/literature_review.tex}
+\input{sections/approach.tex}
 \input{sections/system_design.tex}
 \input{sections/experimental_design.tex}
 \input{sections/results.tex}
