@@ -18,6 +18,10 @@
 \usepackage[nonumberlist]{glossaries}
 \usepackage{tabularx}
 \usepackage{makecell}
+\usepackage{pdflscape}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%\\
+\usepackage{adjustbox}
 
 \renewcommand\theadfont{\bfseries}
 \renewcommand\theadgape{\Gape[3pt]}
@@ -78,7 +82,7 @@
 %% --------------------------------
 
 %% Use biber instead of BibTeX, see README
-\usepackage[citestyle=numeric,style=numeric,backend=biber]{biblatex}
+\usepackage[citestyle=numeric,style=numeric,backend=biber,maxbibnames=99,doi=false,isbn=false,url=false,firstinits=false]{biblatex}
 \addbibresource{thesis.bib}
 
 %% ====================================
@@ -136,8 +140,6 @@
 \input{sections/problem_statement.tex}
 \input{sections/literature_review.tex}
 \input{sections/approach.tex}
-\input{sections/system_design.tex}
-\input{sections/experimental_design.tex}
 \input{sections/results.tex}
 \input{sections/conclusion.tex}
 
