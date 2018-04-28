@@ -130,22 +130,32 @@ axis = \{x,y,z\}, N = \text{number of acceleration values}
 \end{align*}
 The mean acceleration feature was chosen to represent the quantity of motion \cite{Arif2015}. \emph{Acceleration signal magnitude area} is computed by dividing the numerically-integrated area under the curve by the duration of the signal \cite{Totty2017}.
 $$ signal\_magnitude\_area\_acceleration_{axis}= \frac{1}{T}\int_{0}^{T}(|a_x|+|a_y|+|a_z|)dt$$
-The signal magnitude area of the acceleration feature was chosen, because it represents the gross motion of movements and the energy expenditure \cite{Jeran2016}. \emph{Mean angular rate of change} is calculated by taking the sum of the three gyroscope axes \cite{Totty2017}. The mean rate of change feature was chosen, because it represents the quantity of rotation. \emph{Angular rate of change signal magnitude area} is calculated by dividing the numerically-integrated area under the curve by the duration of the signal \cite{Totty2017}.
+The signal magnitude area of the acceleration feature was chosen, because it represents the gross motion of movements and the energy expenditure \cite{Jeran2016}. \emph{Mean angular rate of change} is calculated by taking the sum of each of the three gyroscope axes and dividing by the number of values \cite{Totty2017}.
+\begin{align*}
+mean\_angular\_rate\_of\_change_{axis} = \sum_{i=1}^{N}angular\_rate\_of\_change_{axis}\\
+axis = \{yaw,roll,pitch\}, N = \text{number of gyroscope values}
+\end{align*}
+The mean rate of change feature was chosen, because it represents the quantity of rotation. \emph{Angular rate of change signal magnitude area} is calculated by dividing the numerically-integrated area under the curve by the duration of the signal \cite{Totty2017}.
 $$ g_{sma} = \frac{1}{T}\int_{0}^{T}(|\theta_x|+|\theta_y|+|\theta_z|)dt$$
 The angular rate of change signal magnitude area feature was chosen, because it represents the gross rotation of movements.
-\emph{Mean muscle activation} is calculated by taking the sum of the eight EMG channels. \emph{Muscle activation signal magnitude area} is calculated by dividing the numerically-integrated area under the curve by the duration of the EMG signal.
-$$ e_{sma} = \frac{1}{T}\int_{0}^{T}(|e1|+|e2|+|e3|+|e4|+|e5|+|e6|+|e7|+|e8|)dt$$
+\par \emph{Mean muscle activation} is calculated by taking the sum of each of the eight EMG channels and dividing by the number of values.
+\begin{align*}
+mean\_muscle\_activation_{channel} = \sum_{i=1}^{N}muscle\_activation_{channel}\\
+channel = \{1,2,\dots,8\}, N = \text{number of muscle acitvation values}
+\end{align*}
 The mean muscle activation feature was chosen, because it represents the quantity of muscle movement.
+\emph{Muscle activation signal magnitude area} is calculated by dividing the numerically-integrated area under the curve by the duration of the EMG signal.
+$$ emg_{sma} = \frac{1}{T}\int_{0}^{T}(|e1|+|e2|+|e3|+|e4|+|e5|+|e6|+|e7|+|e8|)dt$$
 \emph{Muscle activation root mean squared} is calculated for each of the eight EMG channels and then averaged.
-$$ e1_{rms} = \sqrt{\frac{1}{n}(e1_1^2+e1_2^2+e1_3^2+\dots+e1_n^2)} $$
-$$ e2_{rms} = \sqrt{\frac{1}{n}(e2_1^2+e2_2^2+e2_3^2+\dots+e2_n^2)} $$
-$$ \dots $$
-$$ f_{rms} = \frac{1}{8}\sum_{i=1}^{8}ei_{rms} $$
+$$ emg\_channel\_i_{rms} = \sqrt{\frac{1}{n}(emg\_channel\_i_1^2+emg\_channel\_i_2^2+\dots+emg\_channel\_i_n^2)} $$
+$$ i = \text{Channel number \{1,2,\dots,8\}} $$
+$$ root\_mean\_squared = \frac{1}{8}\sum_{i=1}^{N}ei_{rms} $$
+$$ N = \text{Channel number \{1,2,\dots,8\}} $$
 Root mean squared is proven to be the gold standard for EMG-force analysis \cite{KALLENBERG2008780}. The root mean squared value represents physiological activity during contraction of the muscle \cite{Totty2017}.
-\emph{EMG Fast Fourier transformation} is applied to each EMG channel to transform the signal from the time domain into the frequency domain. The frequency spectrum can be used to detect muscle fatigue, force production and muscle fiber signal conduction velocity \cite{Gler2005}.
+\emph{EMG Fast Fourier transformation} is applied to each EMG channel to transform the signal from the time domain into the frequency domain. Power Spectral Density represents the distribution of signal strength, which is taken from the frequency domain. The frequency spectrum can be used to detect muscle fatigue, force production and muscle fiber signal conduction velocity \cite{Gler2005}.
 \subsection{Machine Learning}
 \label{sec:Approach:Machine-Learning}
-Two machine learning approaches are evaluated for their accuracy in detecting five common procedures performed by EMS personnel. The first approach is taking the extracted features of every procedure and training a Support Vector Machine (SVM), decision-tree, and $k$-NN machine learning algorithm. SVMs work by constructing hyperplanes between classes. SVMs use different kernel to define the hyperplane, such as: linear, polynomial, and Gaussian radial basis function. A decision-tree is a graph in which each node is a test of comparing data values to a condition, each branch is the result of the test, and each leaf is the class label. Finally, $k$-NN is a algorithm where the inputs are the $k$ closest neighbors of the data point. The algorithm counts the class label of each label and determines the label of the data point using majority voting. The second approach is using the fine-grained movements sequence of a procedure and training a separate Hidden Markov Model (HMM) for each procedure. The states for the HMM are the sub-tasks of the procedure. The Baum-Welch algorithm is used in combination with the Forward-Backward algorithm to train the HMM parameters.
+Two machine learning approaches are evaluated for their accuracy in detecting five common procedures performed by EMS personnel. The first approach is taking the extracted features of every procedure and training a Support Vector Machine (SVM), decision-tree, and $k$-NN machine learning algorithm. The second approach trains a separate Hidden Markov Model (HMM) for every EMS procedure. The HMM consists of the fine-grained movements sequence of a procedure. The states for the HMM are the sub-tasks of the procedure. The Baum-Welch algorithm is used in combination with the Forward-Backward algorithm to train the HMM parameters.
 
 \section{Experimental Design}
 \label{sec:Experimental-Design}
@@ -171,3 +181,6 @@ The evaluation of the automatic recognition system focuses on the accuracy of th
 
 \subsection{Participant Demographics}
 \label{sec:Data-Collection:Participant-Demographics}
+
+\subsection{Machine Learning}
+ The first approach to train a machine learning model with the collected uses three different machine learning algorithms. SVMs work by constructing hyperplanes between classes. SVMs use different kernel to define the hyperplane, such as: linear, polynomial, and Gaussian radial basis function. A decision-tree is a graph in which each node is a test of comparing data values to a condition, each branch is the result of the test, and each leaf is the class label. Finally, $k$-NN is a algorithm where the inputs are the $k$ closest neighbors of the data point. The algorithm counts the class label of each label and determines the label of the data point using majority voting. 
