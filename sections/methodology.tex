@@ -12,7 +12,7 @@
 
 \chapter{Methodology}
 \label{ch:Methodology}
-The approach to developing an automatic system capable of procedures administered by EMS personnel consists of breaking the procedures into anatomical movements, developing an algorithm, and collecting data to train the algorithm through a user study. This thesis focuses on automatically detecting five EMS procedures performed inside an ambulance: placing a intravenous tourniquet, wrapping a wound, applying a bag-valve-mask, placing an oral airway, and \gls{CPR} (Figure \ref{fig:EMS-procedures}). The five EMS procedures were chosen for their reproducibility on a demo mannequin and their assumed recognition difficulty. CPR is assumed to be easily recognizable, due to the repetitive motion during compressions in the accelerometer data. Bag-valve-mask application is assumed to be easily recognizable, due to the repetitive motion during squeezing the bag in the EMG data. Placing a tourniquet is assumed to be harder to recognize, due to missing repetitive motion. Wrapping a wound is assumed to be harder to recognize, due to missing repetitive motion. Placing an oral airway is assumed to be the hardest to recognize, due to missing repetitive motion and a short duration. 
+The approach to developing an automatic system capable of detecting procedures administered by EMS personnel consists of breaking the procedures into anatomical movements, developing an algorithm, and collecting data to train the algorithm through a user study. This thesis focuses on automatically detecting five EMS procedures: placing a intravenous tourniquet, wrapping a wound, applying a bag-valve-mask, placing an oral airway, and \gls{CPR} (Figure \ref{fig:EMS-procedures}). The five EMS procedures were chosen for their reproducibility on a demo mannequin and their assumed recognition difficulty. CPR is assumed to be easily recognizable, due to the repetitive motion during compressions in the accelerometer data. Bag-valve-mask application is assumed to be easily recognizable, due to the repetitive motion during squeezing the bag in the EMG data. Placing a tourniquet is assumed to be harder to recognize, due to missing repetitive motion. Wrapping a wound is assumed to be harder to recognize, due to missing repetitive motion. Placing an oral airway is assumed to be the hardest to recognize, due to missing repetitive motion and a short duration. 
 \begin{figure}[b]
 	\centering
 	\begin{subfigure}[b]{0.18\textwidth}
@@ -53,7 +53,7 @@ The approach to developing an automatic system capable of procedures administere
 \end{figure}
 \section{Hierarchical Task Analysis}
 \label{sec:Approach:Hierarchical-Task-Analysis}
-Medical procedures include repetitive and unique movements. Distinctive patterns in the data from repetitive and unique movements help machine-learning algorithms achieve higher performance. Therefore, the EMS procedures are broken into their anatomical movements using \emph{Hierarchical Task Analysis} in order to identify distinctive patterns in the EMS procedures \cite{kirwan1992guide}. The Hierarchical Task Analysis divides tasks (procedures) into sub-tasks, followed by sub-sub-tasks, and finally anatomical movements. The resulting anatomical movements are analyzed to include their sensability using five commercially available sensors: Apple Watch, Myo, Empatic E4, Garmin Watch Forerunner, and Bioharness BT. Sensability is the ability of a sensor to recognize a human movement. The sensability is determined by considering the type of sensor data and the sensors' ability to detect anatomical movements, such as recognizing muscle movement through EMG data. The placement of a sensor is crucial in its ability to detect anatomical movements. The EMG data for the hand is captured by placing the sensor on the arm. Table \ref{tab:hta:overview} displays an overview of the procedures with their respective sensability per sensor.
+Medical procedures include repetitive and unique movements. Distinctive patterns in the data from repetitive and unique movements help machine-learning algorithms achieve higher performance. Therefore, the EMS procedures are broken into their anatomical movements using \emph{Hierarchical Task Analysis} in order to identify distinctive patterns in the EMS procedures \cite{kirwan1992guide}. The Hierarchical Task Analysis divides tasks (procedures) into sub-tasks, followed by sub-sub-tasks, and finally anatomical movements. The resulting anatomical movements are analyzed to include their sensability using five commercially available sensors: Apple Watch, Myo, Empatic E4, Garmin Watch Forerunner, and Biopac Bioharness BT. Sensability is the ability of a sensor to recognize a human movement. The sensability is determined by considering the type of sensor data and the sensors' ability to detect anatomical movements, such as recognizing muscle movement through EMG data. The placement of a sensor is crucial in its ability to detect anatomical movements. The EMG data for the hand is captured by placing the sensor on the arm. Table \ref{tab:hta:overview} displays an overview of the procedures with their respective sensability per sensor.
 \par CPR is a procedure that is performed on patients with cardiac arrest to preserve brain functionality. The Hierarchical Task Analysis of CPR (Table \ref{tab:hta:cpr}) resulted in four sub-tasks, with two ways to perform the giving breaths sub-task. The first sub-task is to lift the patient's chin, then check for breathing. If the patient is not breathing, there are two ways to give breaths: mouth-to-mouth (Sub-Task 1.3A) and using a bag-valve-mask (Sub-Task 1.3B). The study uses the bag-valve-mask to ventilate the patient, as the mask is commonly used by EMS personnel. After giving two breaths, 30 chest compressions are performed. The breaths and compressions are repeated until the patient has stabilized. CPR contains 27 anatomical task movements when a bag-valve-mask is used to ventilate the patient, of which five were determined not to be sensable using the commercial sensors. The Myo is capable of detecting 22 anatomical tasks, 14 more than the other commercial sensors. Compared to the other devices, the Myo is the only device that includes an EMG sensor, which makes it better at detecting anatomical tasks.
 \par Bag-Valve-Mask ventilation is a procedure used to artificially breath air into a patient's lungs. A bag full of air is attached to a mask, which allows for airflow to the patients' mouth and nose when the bag is squeezed. Hierarchical Task Analysis of Bag-valve-mask ventilation (Table \ref{tab:hta:bagging}) resulted in four sub-tasks, with two ways to place an airway. The first sub-task for EMS personnel is to raise the gurney level for easier access, then the patient's chin is lifted. If the patient is unresponsive an oral airway is placed, otherwise a nasal airway is placed. This thesis uses oral airways, as the demo mannequin does not feature a nasal canal. However, the algorithm can be extended to detect the use of a nasal airway. Finally, the patient is ventilated using the bag-valve-mask by squeezing the bag, pushing air into the patients' lungs. A total of 26 anatomical task movements were found, of which one was determined to not be sensable using the commercial sensors. The Myo is capable of detecting 25 anatomical tasks, eight more than the other commercial sensors.
 \par Placing an intravenous tourniquet is a procedure to highlight veins for better needle placement by constricting blood flow. Hierarchical Task Analysis of placing an intravenous tourniquet (Table \ref{tab:hta:tourniquet}) resulted in two different sub-tasks. At first an EMS personnel has to grab a tourniquet. Then, the tourniquet is applied by tying it around the arm. A total of seven anatomical task movements were found, of which all were determined to be sensable using the Myo, two more than the other commercial sensors.
@@ -89,13 +89,6 @@ The algorithm to recognize procedures performed by EMS personnel inside an ambul
 
 \subsection{Data Acquisition}
 Acceleration, gryoscope, and EMG data are acquired through the Myo armband. The Myo armband is created by Thalmic Labs, Inc. and includes an EMG sensor, triaxial accelerometer, a triaxial gyroscope, and triaxial magnetometer. The data from the magnetometer is not used in the algorithm, due to its susceptibility to environmental noise \cite{Ahmad2013}. Acceleration and gyroscope data is available at 50Hz, while EMG data is available at 200Hz. The EMG data has eight channels with 8bits of resolution for each channel. The accelerometer data consists of $x$, $y$, and $z$ values, and the gyroscope data has $roll$, $pitch$, and $yaw$ (Figure \ref{fig:myo}). The Myo's $z$ axis is perpendicular to the floor, while the $x$ and $y$ axis are in the plane relative to the floor. The Myo's $pitch$ axis is rotating the arm up and down, the $yaw$ axis is rotating the arm side to side, and the $roll$ axis is rotating the arm along itself. Finally, the Myo has an output for proprietary hand gesture recognition, which is used as a feature for the algorithm (Figure \ref{fig:myogestures}): pinch, fist, open, wave in, and wave out.
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\linewidth]{pictures/myogestures}
-	\caption{Myo Gestures (Source: https://dribbble.com/shots/1937560-Gesture-Icons)}
-	\label{fig:myogestures}
-\end{figure}
-
 
 \begin{figure}
 	\centering
@@ -104,6 +97,12 @@ Acceleration, gryoscope, and EMG data are acquired through the Myo armband. The 
 	\label{fig:myo}
 \end{figure}
 
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{pictures/myogestures}
+	\caption{Myo Gestures (Source: https://dribbble.com/shots/1937560-Gesture-Icons)}
+	\label{fig:myogestures}
+\end{figure}
 
 \subsection{Data Processing}
 \label{sec:Approach:Data-Processing}
@@ -111,7 +110,7 @@ The data from the acceleration, gyroscope, and EMG sensors needs to be processed
 
 \subsection{Feature Extraction}
 \label{sec:Approach:Feature-Extraction}
-Human activity recognition systems take features extracted from processed data as input. The features are calculated through the use of a sliding window. Due to time it takes to perform different anatomical movements, the window size will have a length of 2s \cite{Dorfmeister2014}. The window will have a 50\% overlap, which has been proven sufficient in related work \cite{Wannenburg2016}. Table \ref{tab:features} displays all calculated features: Mean, standard deviation, and signal magnitude area for the IMU; Mean, signal magnitude area, root mean squared, and power spectral density for EMG.
+Human activity recognition systems take features extracted from processed data as input. The features are calculated through the use of a sliding window. Due to the time it takes to perform different anatomical movements, the window size will have a length of 2s \cite{Dorfmeister2014}. The window will have a 50\% overlap, which has been proven sufficient in related work \cite{Wannenburg2016}. Table \ref{tab:features} displays all calculated features: Mean, standard deviation, and signal magnitude area for the IMU; Mean, signal magnitude area, root mean squared, and power spectral density for EMG.
 \begin{table}[h]
 	\centering
 	\begin{tabular}{c|l|l}
@@ -129,29 +128,29 @@ Human activity recognition systems take features extracted from processed data a
 	\caption{Features for the Machine Learning algorithm}
 	\label{tab:features}
 \end{table}
-\emph{Mean acceleration}, given in Equation \ref{eq:mean_acc}, is calculated by excluding the highest and lowest 10\% of the data, taking the sum of each of the three accelerometer axes and dividing by the number of values \cite{Totty2017}. Excluding the outliers removes any spikes that may occur due to collisions. The mean acceleration is calculated as $ \overline{acc}^{axis} $, where $axis$ represents all three axis $x,y,z$ and $N$ is the number of acceleration values. The values for $acc^{axis}_i$ include the data for an entire procedure, excluding the highest and lowest 10\%.
+\emph{Mean acceleration}, given in Equation \ref{eq:mean_acc}, is calculated by excluding the highest and lowest 10\% of the data, taking the sum of each of the three accelerometer axes and dividing by the number of values \cite{Totty2017}. Excluding the outliers removes any spikes that may occur due to collisions. The mean acceleration is calculated as $ \overline{acc}^{axis} $, where $axis$ represents all three axes $x,y,z$ and $N$ is the number of acceleration values. The values for $acc^{axis}_i$ include the data for an entire procedure, excluding the highest and lowest 10\%.
 \begin{equation}\label{eq:mean_acc}
 \overline{acc}^{axis} = \frac{1}{N}\sum_{i=1}^{N}acc^{axis}_i
 \end{equation}
 The mean acceleration feature was chosen to represent the quantity of motion \cite{Arif2015}.
-\emph{Acceleration Standard deviation}, given in Equation \ref{eq:sd_acc}, is a measure describing the variance in a set of axis values. The calculated value is represented as $acc\_\sigma^{axis}$, where $axis$ represents all three axis $x,y,z$ and $N$ is the number of acceleration values.
+\emph{Acceleration Standard deviation}, given in Equation \ref{eq:sd_acc}, is a measure describing the variance in a set of axis values. The calculated value is represented as $acc\_\sigma^{axis}$, where $axis$ represents all three axes $x,y,z$ and $N$ is the number of acceleration values.
 \begin{equation}\label{eq:sd_acc}
 acc\_\sigma^{axis} = \sqrt{\frac{\sum_{i=1}^{N}(acc^{axis}_i - \overline{acc}^{axis})}{N - 1}}
 \end{equation}
-\emph{Acceleration signal magnitude area} $acc\_sma$, given in Equation \ref{eq:sma_acc}, is computed by dividing the numerically-integrated area under the curve by the duration of the signal \cite{Totty2017}. The value of the axis are $acc_x,acc_y,acc_z$ respectively, and $T$ is the time duration of the signal.
+\emph{Acceleration signal magnitude area} $acc\_sma$, given in Equation \ref{eq:sma_acc}, is computed by dividing the numerically-integrated area under the curve by the duration of the signal \cite{Totty2017}. The value of the axes are $acc_x,acc_y,acc_z$ respectively, and $T$ is the time duration of the signal.
 \begin{equation}\label{eq:sma_acc}
 acc\_sma = \frac{1}{T}\int_{0}^{T}(|acc_x|+|acc_y|+|acc_z|)dt
 \end{equation}
-The signal magnitude area of the acceleration feature was chosen, because it represents the gross motion of movements and the energy expenditure \cite{Jeran2016}. \emph{Mean angular rate of change}, given in Equation \ref{eq:mean_gyro}, is calculated by taking the sum of each of the three gyroscope axis $yaw, pitch, roll$ and dividing by the number of values $N$ \cite{Totty2017}.
+The signal magnitude area of the acceleration feature was chosen, because it represents the gross motion of movements and the energy expenditure \cite{Jeran2016}. \emph{Mean angular rate of change}, given in Equation \ref{eq:mean_gyro}, is calculated by taking the sum of each of the three gyroscope axes $yaw, pitch, roll$ and dividing by the number of values $N$ \cite{Totty2017}.
 \begin{equation}\label{eq:mean_gyro}
 \overline{gyro}^{axis} = \frac{1}{N}\sum_{i=1}^{N}gyro^{axis}_i
 \end{equation}
 The mean rate of change feature was chosen, because it represents the quantity of rotation.
-\emph{Rate of change standard deviation}, given in Equation \ref{eq:sd_gyro}, is a measure describing the variance in a set of axis values. The calculated value is represented as $gyro\_\sigma^{axis}$, where $axis$ represents all three axis $yaw,pitch,roll$ and $N$ is the number of acceleration values.
+\emph{Rate of change standard deviation}, given in Equation \ref{eq:sd_gyro}, is a measure describing the variance in a set of axis values. The calculated value is represented as $gyro\_\sigma^{axis}$, where $axis$ represents all three axes $yaw,pitch,roll$ and $N$ is the number of acceleration values.
 \begin{equation}\label{eq:sd_gyro}
 gyro\_\sigma^{axis} = \sqrt{\frac{\sum_{i=1}^{N}(gyro^{axis}_i - \overline{gyro}^{axis})}{N - 1}}
 \end{equation}
-\emph{Angular rate of change signal magnitude area}, given in Equation \ref{eq:sma_gyro}, is calculated by dividing the numerically-integrated area under the curve by the duration of the signal \cite{Totty2017}. The value of the axis are $gyro_{yaw},gyro_{pitch},gyro_{roll}$ respectively, and $T$ is the time duration of the signal.
+\emph{Angular rate of change signal magnitude area}, given in Equation \ref{eq:sma_gyro}, is calculated by dividing the numerically-integrated area under the curve by the duration of the signal \cite{Totty2017}. The value of the axes are $gyro_{yaw},gyro_{pitch},gyro_{roll}$ respectively, and $T$ is the time duration of the signal.
 \begin{equation}\label{eq:sma_gyro}
 gyro\_sma = \frac{1}{T}\int_{0}^{T}(|gyro_{yaw}|+|gyro_{pitch}|+|gyro_{roll}|)dt
 \end{equation}
@@ -167,7 +166,7 @@ emg_{sma} = \frac{1}{T}\int_{0}^{T}(|e1|+|e2|+|e3|+|e4|+|e5|+|e6|+|e7|+|e8|)dt
 \end{equation}
 \emph{Muscle activation root mean squared} is calculated for each of the eight EMG channels and then averaged. Equation \ref{eq:rms_emg1} calculates the root mean squared for every channel $i=1,\dots,8$, where $N$ represents the number of values. Equation \ref{eq:rms_emg2} calculates the final averaged root mean squared value of all channels.
 \begin{equation}\label{eq:rms_emg1}
-emg\_channel\_i_{rms} = \sqrt{\frac{1}{N}(emg\_channel\_i_1^2+emg\_channel\_i_2^2+\dots+emg\_channel\_i_N^2)}
+emg\_channel\_i_{rms} = \sqrt{\frac{1}{N}(emg\_channel\_i_1^2+\dots+emg\_channel\_i_N^2)}
 \end{equation}
 \begin{equation}\label{eq:rms_emg2}
 root\_mean\_squared = \frac{1}{8}\sum_{i=1}^{N}emg\_channel\_i_{rms}
@@ -196,9 +195,9 @@ $$B= \{b_{jk}=P[o_t=v_k|q_t=s_j]\}, \sum_{k=1}^{M}b_{jk}=1$$
 $\pi$ is the initial probability array.
 $$\pi=[\pi_i],\pi=P(q_1=s_i)$$
 HMMs can be trained in two different ways: unsupervised and supervised. Supervised training is done, when a dataset is given with labels corresponding to every state of a HMM. The training data is labeled according to the EMS procedures to differentiate between the different HMMs. The HMMs are trained unsupervised with a predetermined number of states determined by from the Hierarchical Task Analysis using the Baum-Welch algorithm. The Baum-Welch algorithm is a strict version of the Expectation-Maximization algorithm, meaning the Baum-Welch algorithm is guaranteed to converge to at least a local maximum \cite{baum1970}. The output of the Baum-Welch algorithm is the most likely hidden transition probabilities $A$ and the most likely set of emission probabilities $B$. The modeled HMMs $\lambda_{j}$ for the EMS procedures $j=1,\dots,5$. Given a test sequence, $Y$, the probability for every HMM is calculated as follows:
-$$P_j=\log(P(Y|\lambda_)), j=1,\dots,5$$
+$$P_j=\log(P(Y|\lambda_)), j=1,\dots,5.$$
 The result of the classification is taking the highest probability of all HMMs:
-$$\lambda^\star=\max_{j}\{P(Y|\lambda_{j})\}$$
+$$\lambda^\star=\max_{j}\{P(Y|\lambda_{j})\}.$$
 
 \section{Experimental Design}
 \label{sec:Experimental-Design}
@@ -206,7 +205,7 @@ A machine learning algorithm needs data from different people performing all fiv
 
 \subsection{Data Collection}
 \label{sec:Experimental-Design:Data-Collection}
-The study was designed to be within-subjects and consists of two questionnaires, training, and data collection. The first questionnaire asks for the participants demographics, such as: age, gender, education, handedness, and the amount of exercise per week. The second questionnaire evaluates the participants fatigueness, such as: the amount of caffeine intake, hours of sleep the last night, hours of sleep the night before, feeling of fatigue as Likert scale, and feeling of stress as Likert scale. The study is split into three days and structured as follows:
+The study was designed to be within-subjects and consists of two questionnaires, training, and data collection. The first questionnaire asks for the participant's demographics, such as: age, gender, education, handedness, and the amount of exercise per week. The second questionnaire evaluates the participant's state of fatigue, such as: the amount of caffeine intake, hours of sleep the last night, hours of sleep the night before, feeling of fatigue as Likert scale, and feeling of stress as Likert scale. The study is split into three days and structured as follows:
 \begin{enumerate}
 	\item \textbf{Day 1} (1 hour): First, the participant was asked to sign the consent form. Then, after a brief introduction to the experiment, the participant was fitted with two Myos on each of his or her arms. Next, the participant was asked to complete the demographic questionnaire, and the fatigue questionnaire. The remainder of the time, the participant was trained in the five medical procedures: CPR, wrapping a wound, tying a tourniquet, placing an oral airway, and bagging.
 	\item \textbf{Day 2} (1 hour): After the participant was fitted with two Myos on each of his or her arms, he or she completed a fatigue questionnaire. For the remainder of the time, the participant was trained in the five medical procedures.
@@ -219,6 +218,7 @@ The study was designed to be within-subjects and consists of two questionnaires,
 The participant’s mean age was X (St. Dev. = X), where X\% were female and X\% were male. Most participants (X\%) completed an undergraduate degree, and the rest (X\%) have at least a high-school diploma. The participants were primarily right-handed (X\%), with Y\% left-handed. The participant's mean amount of exercise per week was X (St. Dev. = X).
 
 \subsection{Machine Learning}
+\label{sec:Data-Collection:Machine-Learning}
  The machine learning algorithm approach is compared to three different machine learning algorithms: SVM, decision-tree, and $k$-NN. SVMs work by constructing hyperplanes between classes. SVMs use different kernel functions to define the hyperplane, such as: linear, polynomial, and Gaussian radial basis function. The comparison will use the radial basis function, as the problem is non linear and it is the de facto standard. A decision-tree is a graph in which each node compares data values to a condition, a branch follows the result of the comparison, and each leaf is the class label. Finally, $k$-NN is an algorithm where the inputs are the $k$ closest neighbors of the data point. The algorithm counts the class label of each label and determines the label of the data point using majority voting. 
  
  \subsection{Research Questions}
