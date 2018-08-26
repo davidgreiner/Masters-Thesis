@@ -25,3 +25,70 @@
 \input{appendix/tourniquet.tex}
 
 \input{appendix/wound.tex}
+
+\section{Machine Learning Algorithms Parameters}
+\label{sec:appendix:mlparameters}
+The decision-tree algorithm achieved the highest score using the following parameters:
+\begin{itemize}
+	\item \texttt{criterion='gini'}
+	\item \texttt{splitter='best'}
+	\item \texttt{max\_depth=None}
+	\item \texttt{min\_samples\_split=2}
+	\item \texttt{min\_samples\_leaf=1}
+	\item \texttt{max\_leaf\_nodes=None}
+\end{itemize}
+The SVM algorithm achieved the highest score using the following parameters:
+\begin{itemize}
+	\item \texttt{kernel='rbf'}
+	\item \texttt{C=0.01}
+	\item \texttt{gamma=1000}
+\end{itemize}
+The $k$-NN algorithm achieved the highest score using the following parameters:
+\begin{itemize}
+	\item $k$=4
+	\item \texttt{weights=uniform}
+	\item \texttt{algorithm=auto}
+\end{itemize}
+The HMM algorithm achieved the highest score using the following parameters:
+\begin{itemize}
+	\item \texttt{DistributionModel=NormalDistribution}
+	\item \texttt{n\_components=1}
+	\item \texttt{algorithm='baum-welch'}
+\end{itemize}
+
+\newpage
+
+\section{2 Seconds and 4 Seconds Window Sizes}
+\label{sec:appendix:windows}
+\begin{table}[h]
+	\centering
+	\begin{tabular}{lllllllllllll}
+		\multirow{2}{*}{\rotatebox[origin=c]{45}{\textbf{Procedure}}} & \multicolumn{3}{c}{\textbf{decision-tree}} & \multicolumn{3}{c}{\textbf{$k$-NN} ($k=4$)} & \multicolumn{3}{c}{\textbf{SVM}} & \multicolumn{3}{c}{\textbf{HMM}} \\
+		& \rot{Precision}     & \rot{Recall}    & \rot{F1}    & \rot{Precision}     & \rot{Recall}    & \rot{F1}  & \rot{Precision}     & \rot{Recall}    & \rot{F1} & \rot{Precision}     & \rot{Recall}    & \rot{F1} \\
+		T & 0.63 & 0.64 & 0.63 & 0.34 & 0.56 & 0.42 & 0.53 & 0.66 & 0.59 & 0.29 & 0.39 & 0.33 \\
+		W & 0.73 & 0.73 & 0.73 & 0.42 & 0.47 & 0.44 & 0.58 & 0.68 & 0.63 & 0.22 & 0.19 & 0.20 \\
+		B & 0.20 & 0.21 & 0.21 & 0.15 & 0.05 & 0.07 & 0.18 & 0.11 & 0.14 & 0.70 & 0.71 & 0.71 \\
+		O & 0.32 & 0.32 & 0.32 & 0.23 & 0.05 & 0.09 & 0.28 & 0.17 & 0.22 & 0.64 & 0.44 & 0.53 \\
+		C & 0.59 & 0.59 & 0.59 & 0.45 & 0.29 & 0.36 & 0.46 & 0.34 & 0.39 & 0.38 & 0.47 & 0.42 \\
+		\hline
+		All & 0.60 & 0.60 & 0.60 & 0.38 & 0.39 & 0.36 & 0.49 & 0.51 & 0.49 & 0.48 & 0.46 & 0.47 \\
+	\end{tabular}
+	\caption{2 seconds. Note: T is intravenous tourniquet, W is wrapping a wound, B is Bag-Valve-Mask ventilation, O is oral airway, and C is CPR}
+	\label{tab:ml-2s}
+\end{table}
+\begin{table}[h]
+	\centering
+	\begin{tabular}{lllllllllllll}
+		\multirow{2}{*}{\rotatebox[origin=c]{45}{\textbf{Procedure}}} & \multicolumn{3}{c}{\textbf{decision-tree}} & \multicolumn{3}{c}{\textbf{$k$-NN} ($k=4$)} & \multicolumn{3}{c}{\textbf{SVM}} & \multicolumn{3}{c}{\textbf{HMM}} \\
+		& \rot{Precision}     & \rot{Recall}    & \rot{F1}    & \rot{Precision}     & \rot{Recall}    & \rot{F1}  & \rot{Precision}     & \rot{Recall}    & \rot{F1} & \rot{Precision}     & \rot{Recall}    & \rot{F1} \\
+		T & 0.68 & 0.69 & 0.69 & 0.33 & 0.57 & 0.41 & 0.55 & 0.64 & 0.59 & 0.29 & 0.44 & 0.35 \\
+		W & 0.77 & 0.78 & 0.78 & 0.40 & 0.43 & 0.42 & 0.57 & 0.69 & 0.63 & 0.29 & 0.25 & 0.27 \\
+		B & 0.29 & 0.28 & 0.28 & 0.17 & 0.04 & 0.07 & 0.18 & 0.10 & 0.13 & 0.66 & 0.67 & 0.66 \\
+		O & 0.41 & 0.40 & 0.41 & 0.22 & 0.07 & 0.10 & 0.28 & 0.15 & 0.20 & 0.60 & 0.37 & 0.46 \\
+		C & 0.65 & 0.63 & 0.64 & 0.37 & 0.23 & 0.28 & 0.46 & 0.37 & 0.41 & 0.32 & 0.37 & 0.34 \\
+		\hline
+		All & 0.66 & 0.66 & 0.66 & 0.35 & 0.36 & 0.33 & 0.49 & 0.52 & 0.50 & 0.46 & 0.44 & 0.44 \\
+	\end{tabular}
+	\caption{4 seconds}
+	\label{tab:ml-4s}
+\end{table}
