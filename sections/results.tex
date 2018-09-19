@@ -153,7 +153,7 @@ Each individual participant's datasets were used to train the decision-tree, SVM
 	\label{tab:cpr:ml}
 \end{table}
 
-\par Bag-Valve-Mask ventilation achieved the lowest F1 scores of all procedures with F1 scores as low as 0.08, as seen in Table \ref{tab:bvm:ml}. The HMM classifier achieved the highest mean F1 score at 0.64 (Std. Dev=0.19), followed by the decision-tree algorithm at 0.60 (Std. Dev=0.09), and SVM algorithm at 0.26 (Std. Dev=0.06). The $k$-NN algorithm came last with a F1 score of 0.14 (Std. Dev=0.11).
+\par Bag-Valve-Mask ventilation achieved the lowest F1 scores of all procedures with F1 scores as low as 0.08 for participant eight using the $k$-NN algorithm, as seen in Table \ref{tab:bvm:ml}. The highest F1 score was achieved by participant ten using the HMM algorithm. The HMM algorithm also achieved the highest mean F1 score at 0.64 (Std. Dev=0.19), followed by the decision-tree algorithm at 0.60 (Std. Dev=0.09), and SVM algorithm at 0.26 (Std. Dev=0.06). The $k$-NN algorithm came last with a F1 score of 0.14 (Std. Dev=0.11).
 \begin{table}[h]
 	\centering
 	\begin{tabular}{lllllllllllll}
@@ -177,7 +177,7 @@ Each individual participant's datasets were used to train the decision-tree, SVM
 	\label{tab:bvm:ml}
 \end{table}
 
-\par Placing an oral airway was the most difficult procedure to detect, with F1 scores as low as 0.12, as seen in Table \ref{tab:o:ml}. The decision-tree classifier was the algorithm with the highest mean F1 score at 0.63 (Std. Dev=0.08), followed by the HMM algorithm at 0.51 (Std. Dev=0.27), and SVM algorithm at 0.20 (Std. Dev=0.04). The $k$-NN algorithm came last with a F1 score of 0.12 (Std. Dev=0.08).
+\par Placing an oral airway was the most difficult procedure to detect, with F1 scores as low as 0.00 for participant five using $k$-NN, as seen in Table \ref{tab:o:ml}. The highest F1 score was achieved by participant four using the HMM algorithm. The decision-tree classifier was the algorithm with the highest mean F1 score at 0.63 (Std. Dev=0.08), followed by the HMM algorithm at 0.51 (Std. Dev=0.27), and SVM algorithm at 0.20 (Std. Dev=0.04). The $k$-NN algorithm came last with a F1 score of 0.12 (Std. Dev=0.08).
 \begin{table}[h]
 	\centering
 	\begin{tabular}{lllllllllllll}
@@ -201,7 +201,7 @@ Each individual participant's datasets were used to train the decision-tree, SVM
 	\label{tab:o:ml}
 \end{table}
 
-\par Placing an IV tourniquet achieved a good F1 score for all machine learning algorithms except the HMM algorithm, as seen in Table \ref{tab:t:ml}. The decision-tree classifier was the algorithm with the highest mean F1 score at 0.81 (Std. Dev=0.06), followed by the SVM algorithm at 0.53 (Std. Dev=0.10), and $k$-NN at 0.40 (Std. Dev=0.05). The HMM algorithm came last with a F1 score of 0.24 (Std. Dev=0.21).
+\par Placing an IV tourniquet achieved a good F1 score for all machine learning algorithms except the HMM algorithm, as seen in Table \ref{tab:t:ml}. The lowest F1 score of 0.00 were achieved by participants two, three, and five. The highest F1 score was 0.87 by participant eight using the decision-tree. The decision-tree classifier was the algorithm with the highest mean F1 score at 0.81 (Std. Dev=0.06), followed by the SVM algorithm at 0.53 (Std. Dev=0.10), and $k$-NN at 0.40 (Std. Dev=0.05). The HMM algorithm came last with a F1 score of 0.24 (Std. Dev=0.21).
 \begin{table}[h]
 	\centering
 	\begin{tabular}{lllllllllllll}
@@ -225,7 +225,7 @@ Each individual participant's datasets were used to train the decision-tree, SVM
 	\label{tab:t:ml}
 \end{table}
 
-\par Wrapping a head wound achieved the highest F1 for the decision-tree algorithm, as seen in Table \ref{tab:w:ml}. The decision-tree classifier had a mean F1 score of 0.90 (Std. Dev=0.06), followed by the SVM algorithm at 0.61 (Std. Dev=0.04), and $k$-NN at 0.50 (Std. Dev=0.04). The HMM algorithm came last with a F1 score of 0.40 (Std. Dev=0.18)
+\par Wrapping a head wound achieved the highest F1 for the decision-tree algorithm of 0.93 for participants eight and ten, as seen in Table \ref{tab:w:ml}. The lowest F1 score was 0.00 for participant seven using the HMM algorithm. The decision-tree classifier had a mean F1 score of 0.90 (Std. Dev=0.06), followed by the SVM algorithm at 0.61 (Std. Dev=0.04), and $k$-NN at 0.50 (Std. Dev=0.04). The HMM algorithm came last with a F1 score of 0.40 (Std. Dev=0.18)
 \begin{table}[]
 	\centering
 	\begin{tabular}{lllllllllllll}
@@ -252,6 +252,7 @@ Each individual participant's datasets were used to train the decision-tree, SVM
 \subsection{Individual Participant Results Discussion}
 \label{sec:Results:Individual:Discussion}
 Contrary to the initial assumption in $H_1$, recognition of CPR and Bag-valve-mask ventilation will have the highest accuracy for each machine learning algorithm, due to its unique movements, the unique movements during CPR were not as helpful to accurately detect the procedure. The hypothesis was not supported. The overlap of the giving breaths motion resulted in CPR being misclassified as Bag-Valve-Mask ventilation. Segmenting out the chest-compressions from the breathing motions and only training using the chest-compressions may result in higher accuracy due to the chest-compressions not appearing in any other procedure.
+\par Results between the participants varied greatly. The HMM algorithm scored 0.61 for one participant and 0.00 for another participant, see Table \ref{tab:cpr:ml}. Other algorithms, such as decision-tree and SVM were more stable as indicated by a low standard deviation.
 \par The Bag-Valve-Mask ventilation procedure has such a unique squeezing movement that the initial assumption concluded that it will be one of the easiest procedures to detect. In contrast it turned out to be one of the hardest, which may be due to its movement overlap with CPR.
 \par The F1 scores show that detecting the placement of an oral airway is challenging. The short duration for the placemet does not leave much time for the algorithm to detect unique movements. The grabbing and spinning motion can occur in several other procedures when equipment are picked up and put into place.
 \par The low score of the HMM algorithm for placing an intravenous tourniquet can be a result of a close log probability of the HMM models. The HMM algorithm picks the highest log probability when data is tested on all HMM models. If the log probability are close it can mean the motion is easily interchangeable.
@@ -294,7 +295,7 @@ The F1 score for the generalized population is close to the results generated fo
 
 \section{Discussion}
 \label{sec:Results:Discussion}
-The results clearly show that it is feasible to successfully recognize procedures performed by EMS personnel on patients using the Myo sensor. The F1 score leaves room for improvement. The comparison between the decision-tree, $k$-NN, SVM, and HMM algorithm highlight the strengths of the decision-tree algorithm. The results also show a high variance in accuracy depending on the algorithm and procedure. The algorithms were able to successfully detect the procedures both individually and over all participants.
+The results clearly show that it is feasible to successfully recognize procedures performed by EMS personnel on patients using the Myo sensor. The results also show a high variance in accuracy depending on the algorithm and procedure. The comparison between the decision-tree, $k$-NN, SVM, and HMM algorithm highlight the strengths of the decision-tree algorithm. The algorithms were able to successfully detect the procedures both individually and over all participants.
 \par $H_1$ hypothesized that CPR and Bag-valve-mask ventilation will have the highest accuracy for each machine learning algorithm, due to its unique movements. CPR and Bag-valve-mask ventilation had neither the highest F1 score for individual participants or for all participants. The result shows that more data preparation needs to take place in order to separate similar movements, such as dividing the procedures further into their task and training the algorithms on a task basis, while using the sequence of tasks to detect the procedure.
 \par $H_2$ hypothesized that the recognition of a procedure through the sequence of fine-grained movements using a Hidden Markov Model will be more accurate than detection through training coarse-grained movement models. The HMM algorithm achieved the highest F1 score for Bag-Valve-Mask ventilation with the individual participants results. The overall participant generalizability placed the HMM algorithm third.
 \par The F1 score for the HMM was expected to be significantly higher given its ability to detect data sequences. The results from training using individual participants and all participants show that the HMM placed second behind the decision-tree.
